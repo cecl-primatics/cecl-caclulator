@@ -292,10 +292,11 @@ th, td {
 			data : JSON.stringify(formData),
 			dataType : 'json',
 			success : function(result) {
-				$("#mainTables").html(data);
+				location.reload();
 			},
 			error : function(e) {
 				console.log("ERROR: ", e);
+				location.reload();
 			}
 		});
 	}

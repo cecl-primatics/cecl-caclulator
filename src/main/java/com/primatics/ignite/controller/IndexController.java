@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.client.RestTemplate;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.primatics.ignite.model.AnalyzedLoan;
 import com.primatics.ignite.model.Rates;
@@ -101,7 +100,7 @@ public class IndexController {
 		al.setSurvival(updated.getSurvival());
 		al.setLossRate(updated.getLossRate());
 
-		System.out.println(
+		/*System.out.println(
 				" ***********************************************************************************************************************************");
 		System.out.println(al.getPortfolio());
 		System.out.println(Arrays.asList(al.getLossRate()).toString());
@@ -111,7 +110,7 @@ public class IndexController {
 		System.out.println(al.getTotalBalance());
 		System.out.println(al.getTotalLoss());
 		System.out.println(
-				" ***********************************************************************************************************************************");
+				" ***********************************************************************************************************************************");*/
 
 		loan = al;
 		model.addAttribute("loanList", al);
