@@ -19,26 +19,66 @@ table, th, td {
 th, td {
 	padding: 10px;
 }
+#myProgress, #myCalc {
+	width: 100%;
+	background-color: #ffffff;
+}
+
+#myBar, #myCal {
+	width: 0%;
+	height: 30px;
+	background-color: #4CAF50;
+}
+
+#wrapper {
+	margin-right: 200px;
+}
+
+#content {
+	float: left;
+	width: 100%;
+}
+
+#sidebar {
+	float: right;
+	width: 200px;
+}
 </style>
 <body>
+	<div class="container" id="run">
+		<div class="form-group blu-margin">
+			<select class="form-control"
+				id="dropScenario" name="scens">
+				<option th:each="scenario : ${scenarios}" th:value="${scenario}"
+					th:text="${scenario}"></option>
+			</select>
+		</div>
+	</div>
+		<div class="form-group">
+			<form method="POST" enctype="text/plain" id="calcForm">
+				<label for="run"></label> <input class="btn btn-primary"
+					onClick="calc()" value="Prepare" id="btnCalc" />
+			</form>
+		</div>
+		<p class="bg-success" id="result1"></p>
+		<script type="text/javascript" src="js/calc.js"></script>
+		<div id="myCalc">
+			<div class="progress-bar progress-bar-striped active"
+				role="progressbar" id="myCal"
+				style="text-align: center; color: #fff">Preparing...</div>
+		</div>
+
 	<div class="container" id="mainTables">
 		<table class="table" id="balanceTable">
 			<thead>
 				<tr>
-					<th id="portfolioName">Portfolio</th>
-					<th id="totalBalanceName">Portfolio Balance</th>
+					<th id="scenarioName">Scenario</th>
+					<th id="totalBalanceName">Scenario Balance</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!-- 				<tr th:each="loan : ${loanList}">
-					<td th:text="${loan.loanId}"></td>
-					<td th:text="${loan.balance}"></td>
-					<td th:text="${loan.survival}"></td>
-					<td th:text="${loan.lossRate}"></td>
-					<td th:text="${loan.lossAmount}"></td>
-				</tr> -->
 				<tr class="active">
-					<td id="portfolio" th:text="${loanList.portfolio}"></td>
+					<td id="scenario" th:text="${loanList.scenario}"></td>
 					<td id="totalBalance" th:text="${loanList.totalBalance}"
 						pattern="[0-9]*"></td>
 				</tr>
@@ -68,37 +108,53 @@ th, td {
 			</thead>
 			<tbody>
 				<tr class="warning">
-					<td id="survival00" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival00" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[0]}"></td>
-					<td id="survival01" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival01" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[1]}"></td>
-					<td id="survival02" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival02" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[2]}"></td>
-					<td id="survival03" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival03" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[3]}"></td>
-					<td id="survival04" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival04" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[4]}"></td>
-					<td id="survival05" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival05" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[5]}"></td>
-					<td id="survival06" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival06" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[6]}"></td>
-					<td id="survival07" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival07" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[7]}"></td>
-					<td id="survival08" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival08" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[8]}"></td>
-					<td id="survival09" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival09" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[9]}"></td>
-					<td id="survival010" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival010" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[10]}"></td>
-					<td id="survival011" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival011" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[11]}"></td>
-					<td id="survival012" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival012" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[12]}"></td>
-					<td id="survival013" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival013" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[13]}"></td>
-					<td id="survival014" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="survival014" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[14]}"></td>
-					<td id="survival015" onfocusout="getArray()" contenteditable='true'  placeholder="1.0"
+					<td id="survival015" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.survival[15]}"></td>
 				</tr>
 			</tbody>
@@ -127,37 +183,53 @@ th, td {
 			</thead>
 			<tbody>
 				<tr class="warning">
-					<td id="lossRate00" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate00" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[0]}"></td>
-					<td id="lossRate01" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate01" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[1]}"></td>
-					<td id="lossRate02" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate02" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[2]}"></td>
-					<td id="lossRate03" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate03" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[3]}"></td>
-					<td id="lossRate04" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate04" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[4]}"></td>
-					<td id="lossRate05" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate05" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[5]}"></td>
-					<td id="lossRate06" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate06" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[6]}"></td>
-					<td id="lossRate07" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate07" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[7]}"></td>
-					<td id="lossRate08" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate08" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[8]}"></td>
-					<td id="lossRate09" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate09" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[9]}"></td>
-					<td id="lossRate010" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate010" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[10]}"></td>
-					<td id="lossRate011" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate011" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[11]}"></td>
-					<td id="lossRate012" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate012" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[12]}"></td>
-					<td id="lossRate013" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate013" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[13]}"></td>
-					<td id="lossRate014" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate014" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[14]}"></td>
-					<td id="lossRate015" onfocusout="getArray()" contenteditable='true' placeholder="1.0"
+					<td id="lossRate015" onfocusout="getArray(this); highlight(this)"
+						contenteditable='true' placeholder="1.0"
 						th:text="${loanList.lossRate[15]}"></td>
 				</tr>
 			</tbody>
@@ -221,51 +293,47 @@ th, td {
 				</tr>
 			</tbody>
 		</table>
-		<table class="table" id="balanceTable">
+		<table class="table" id="totalLossTable">
 			<thead>
 				<tr>
 					<th id="totalLoss">Total Loss for all Periods</th>
 				</tr>
 			</thead>
 			<tbody>
-				<!-- 				<tr th:each="loan : ${loanList}">
-					<td th:text="${loan.loanId}"></td>
-					<td th:text="${loan.balance}"></td>
-					<td th:text="${loan.survival}"></td>
-					<td th:text="${loan.lossRate}"></td>
-					<td th:text="${loan.lossAmount}"></td>
-				</tr> -->
 				<tr class="active">
 					<td id="totalLoss" th:text="${loanList.totalLoss}" pattern="[0-9]*"></td>
 				</tr>
 			</tbody>
 		</table>
-		<div id="postResultDiv">
-    </div>
+		<div id="postResultDiv"></div>
 		<br />
-		<!-- <h2>Calculate</h2>
-	<form action="/addCar" method="POST">
-		LoanId <input type="text" id="loanId" name="loanId" /><br /> Balance
-		<input type="text" id="balance" name="balance" /><br /> Survival <input
-			type="text" id="survival" name="survival" /><br /> LossRate
-		<textarea rows="5" cols="70" id="lossRate" name="lossRate" />
-		<br /> LossAmount
-		<textarea rows="5" cols="70" id="lossAmount" name="lossAmount" />
-		<br /> <input type="submit" />
-	</form>
-	<h2>Search for Loans</h2>
-	<form action="/search" method="POST">
-		<input type="text" name="search" id="search" th:value="${search}" />
-		<input type="submit" value="Search" />
-	</form> -->
 	</div>
 </body>
-<script>
-	// No focus = Changes the background color of input to red
+<script th:inline="javascript">
+		/*<![CDATA[*/
 	var suvivaldata = Array();
 	var lossratedata = Array();
+	var index;
+	var scenarioSelected = $("#dropScenario").find(":selected").text();
 
-	function getArray() {
+		function calc() {
+			var elem = document.getElementById("myCal");
+			var width = 0;
+			var id = setInterval(frame, 0);
+			function frame() {
+				if (width >= 100) {
+					clearInterval(id);
+				} else {
+					width++;
+					elem.style.width = width + '%';
+				}
+			}
+		}
+
+	function getArray(x) {
+		
+		var id = $(x).closest('table').attr('id');
+		var cellIndex = x.cellIndex;
 		$("#survivalTable tr").each(function(i, v) {
 			//suvivaldata[i] = Array();
 			$(this).children('td').each(function(ii, vv) {
@@ -279,10 +347,11 @@ th, td {
 				lossratedata[ii] = $(this).text();
 			});
 		})
-
 		var formData = {
 			survival : suvivaldata,
-			lossRate : lossratedata
+			lossRate : lossratedata,
+			index: cellIndex,
+			scenario: scenarioSelected
 		}
 		// DO POST
 		$.ajax({
@@ -300,33 +369,14 @@ th, td {
 			}
 		});
 	}
-	function blurSurvivalFunction(x) {
-		var id = $(x).closest('table').attr('id');
-		//var cellIndex = x.cellIndex;
-		//var lossRate = $("#lossRateTable #lossRate0"+cellIndex).text();
-		//var balance = $("#balanceTable #balance").text();
-		//var loanId = $("#balanceTable #loanId").text();
-		//var survival = x.firstChild.nodeValue;
-		//alert("LoanId ::: "+loanId+" Survival value is: " + survival  +" -> Survival Index is "+ cellIndex +" -> Table id is: "+id +" Loss Rate is: "+lossRate+" Balance is: "+balance);
-		//alert("LoanId ::: "+loanId+" ---> Survival value is: " + survival);
-		$("#survivalTable tr").children('td').each(function(ii, vv) {
-				suvivaldata[ii] = $(this).text();
-			});
-		$("#lossRateTable tr").children('td').each(function(ii, vv) {
-				lossratedata[ii] = $(this).text();
-			});
-		alert(suvivaldata);
-		alert(lossratedata);
-	}
-
-	function blurLossRateFunction(x) {
+	
+	function highlight(x) {
 		var id = $(x).closest('table').attr('id');
 		var cellIndex = x.cellIndex;
-		var survival = $("#survivalTable #survival0" + cellIndex).text();
-		var loanId = $("#balanceTable #loanId").text();
-		var lossRate = x.firstChild.nodeValue;
-		//alert("LoanId ::: "+loanId+" Loss Rate value is: " + lossRate  +" -> LossRate Index is "+ cellIndex +" -> Table id is: "+id +" Survival is: "+survival+" Balance is: "+balance);
-		alert("LoanId ::: " + loanId + " -----> Loss Rate value is: " + lossRate);
+		var lossrate = $("#lossRateTable #lossRate0"+ cellIndex).css("background-color","black").css("color","white");
+		var survival = $("#survivalTable #survival0" + cellIndex).css("background-color","black").css("color","white");
+		var totalLossAmount = $("#totalLossAmountTable #totalLossAmounts0" + cellIndex).css("background-color","black").css("color","white");
+		var totalLoss = $("#totalLossTable #totalLoss").css("background-color","black").css("color","white");
 	}
 
 	function blurBalanceFunction(x) {
@@ -336,5 +386,6 @@ th, td {
 		var balance = x.firstChild.nodeValue;
 		alert("LoanId ::: " + loanId + " ----> Balance is: " + balance);
 	}
+	/*]]>*/
 </script>
 </html>
