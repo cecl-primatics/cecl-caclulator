@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 public class AnalyzedLoan {
 	
-	private Integer key;
+	private String key;
 	private String scenario;
 	private BigDecimal totalBalance;
 	private BigDecimal[] totalLossAmounts;
@@ -15,7 +15,7 @@ public class AnalyzedLoan {
 	
 	public AnalyzedLoan() {}
 	
-	public AnalyzedLoan(Integer key, String scenario, BigDecimal totalBalance, BigDecimal[] totalLossAmounts, BigDecimal totalLoss) {
+	public AnalyzedLoan(String key, String scenario, BigDecimal totalBalance, BigDecimal[] totalLossAmounts, BigDecimal totalLoss) {
 		super();
 		this.key = key;
 		this.scenario = scenario;
@@ -24,10 +24,10 @@ public class AnalyzedLoan {
 		this.totalLoss = totalLoss;
 	}
 	
-	public Integer getKey() {
+	public String getKey() {
 		return key;
 	}
-	public void setKey(Integer key) {
+	public void setKey(String key) {
 		this.key = key;
 	}
 	public String getScenario() {

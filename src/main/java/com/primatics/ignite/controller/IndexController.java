@@ -7,12 +7,17 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.RandomStringUtils;
+import org.apache.commons.text.CharacterPredicates;
+import org.apache.commons.text.RandomStringGenerator;
 import org.json.JSONException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -52,7 +57,7 @@ public class IndexController {
 		if (loan == null) {
 			BigDecimal[] totalLossAmounts = new BigDecimal[16];
 			Arrays.fill(totalLossAmounts, new BigDecimal(0.0));
-			AnalyzedLoan loanEmpty = new AnalyzedLoan(000, "not started", new BigDecimal(0.0), totalLossAmounts,
+			AnalyzedLoan loanEmpty = new AnalyzedLoan(generateUniqueId(), "not started", new BigDecimal(0.0), totalLossAmounts,
 					new BigDecimal(0.0));
 			Double[] survivals = new Double[16];
 			Arrays.fill(survivals, 1.0);
@@ -68,6 +73,22 @@ public class IndexController {
 		}
 		return "home";
 	}
+	
+	@GetMapping("/")
+	public String main(Model model) {
+
+		model.addAttribute("scenarios", getRunlist());
+		return "main";
+	}
+	
+	public static String generateUniqueId() {      
+ 		RandomStringGenerator randomStringGenerator =
+ 		        new RandomStringGenerator.Builder()
+ 		                .withinRange('0', 'z')
+ 		                .filteredBy(CharacterPredicates.LETTERS, CharacterPredicates.DIGITS)
+ 		                .build();
+ 		return randomStringGenerator.generate(12);
+    }
 
 	@ResponseBody
 	@RequestMapping(value = "/home/analysis", method = { RequestMethod.GET, RequestMethod.POST })
@@ -103,13 +124,21 @@ public class IndexController {
 		String json = new ObjectMapper().writeValueAsString(requestBody);
 		HttpEntity<String> entity = new HttpEntity<String>(json, headers);
 
-		ResponseEntity<AnalyzedLoan> l = restTemplate.postForEntity("http://localhost:8082/api/recalculate/", entity,
+		ResponseEntity<AnalyzedLoan> l = restTemplate.postForEntity("http://18.216.252.12:30003/api/recalculate/", entity,
 				AnalyzedLoan.class);
 
 		loan = l.getBody();
 		model.addAttribute("loanList", loan);
 		model.addAttribute("scenarios", getRunlist());
 		return loan;
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/home/loan", method = { RequestMethod.GET })
+	public AnalyzedLoan getAnalyzedLoan() {
+
+		AnalyzedLoan aLoan = mongoTemplate.findOne(new Query(), AnalyzedLoan.class);
+		return aLoan;
 	}
 
 	@ResponseBody
@@ -128,7 +157,7 @@ public class IndexController {
 
 		System.out.println("STEP 8 - Calling /home/calculate endpoint");
 		Stopwatch imp1 = Stopwatch.createStarted();
-		ResponseEntity<AnalyzedLoan> al = restTemplate.postForEntity("http://localhost:8082/api/cache", entity, AnalyzedLoan.class);
+		ResponseEntity<AnalyzedLoan> al = restTemplate.postForEntity("http://18.216.252.12:30003/api/cache", entity, AnalyzedLoan.class);
 		imp1 = imp1.stop();
 		
 		loan = al.getBody();
@@ -136,14 +165,13 @@ public class IndexController {
 
 	public List<String> getRunlist() {
 
-		DBCursor cur = mongoTemplate.getCollection("fs.files").find();
+		DBCursor cur = mongoTemplate.getCollection("loanFiles.files").find();
 
 		List<String> scenarios = new ArrayList<String>();
 		Iterator<DBObject> it = cur.iterator();
 		while (it.hasNext()) {
 			DBObject scen = it.next();
 			DBObject scenario = (DBObject) scen.get("metadata");
-			System.out.println(scenario.get("run_name").toString());
 			scenarios.add((String) scenario.get("run_name"));
 		}
 

@@ -11,7 +11,7 @@ public class Loan implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -4175385848044131093L;
-	private Integer key;
+	private String key;
 	private String scenario;
 	private String loanId;
 	private Double balance;
@@ -22,11 +22,11 @@ public class Loan implements Serializable {
 	public Loan() {
 	}
 	
-	public Integer getKey() {
+	public String getKey() {
 		return key;
 	}
 
-	public void setKey(Integer key) {
+	public void setKey(String key) {
 		this.key = key;
 	}
 	
@@ -84,7 +84,7 @@ public class Loan implements Serializable {
 				+ "]";
 	}
 
-	public Loan(Integer key, String scenario, String loanId, Double balance, Double[] survival, Double[] lossRate, Double[] lossAmount) {
+	public Loan(String key, String scenario, String loanId, Double balance, Double[] survival, Double[] lossRate, Double[] lossAmount) {
 		super();
 		this.key = key;
 		this.scenario = scenario;
