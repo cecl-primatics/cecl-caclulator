@@ -13,4 +13,4 @@ ENV JAVA_OPTS -XX:+UseG1GC -XX:+UseTLAB -XX:NewSize=512m -XX:MaxNewSize=512m -XX
 EXPOSE 8084
 VOLUME ["/data"]
 ADD /maven/cecl-ignite-cache-service.jar cecl-ignite-cache-service.jar
-ENTRYPOINT ["java", "-Dspring.data.mongodb.uri=mongodb://cecl:cecl@mongodb-32-centos7/loans", "-jar","/cecl-ignite-cache-service.jar"]
+ENTRYPOINT ["java", "-Dspring.data.mongodb.uri=mongodb://cecl:cecl@18.221.202.202/loans", "-jar","/cecl-ignite-cache-service.jar"]
