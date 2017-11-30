@@ -59,32 +59,25 @@
 			<bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
 				<property name="ipFinder">
 					<bean
-						class="org.apache.ignite.spi.discovery.tcp.ipfinder.vm.TcpDiscoveryVmIpFinder">
-						<property name="addresses">
-							<list>
-								<value>10.0.4.207</value>
-							</list>
-						</property>
+						class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
 					</bean>
 				</property>
-			</bean>
-		</property>
-		<property name="cacheConfiguration">
-			<list>
-				<!-- Creating a cache configuration. -->
-				<bean class="org.apache.ignite.configuration.CacheConfiguration">
-					<property name="name" value="loanCache" />
-					<property name="cacheMode" value="LOCAL" />
-					<property name="atomicityMode" value="ATOMIC" />
-					<!-- Set number of backups to 0 -->
-					<property name="backups" value="0" />
-					<property name="onheapCacheEnabled" value="false" />
-					<property name="copyOnRead" value="false" />
-					<!--<property name="storeKeepBinary" value="false"/> -->
-					<!-- Creating the affinity function with custom setting. -->
+				<property name="cacheConfiguration">
+					<list>
+						<!-- Creating a cache configuration. -->
+						<bean class="org.apache.ignite.configuration.CacheConfiguration">
+							<property name="name" value="loanCache" />
+							<property name="cacheMode" value="LOCAL" />
+							<property name="atomicityMode" value="ATOMIC" />
+							<!-- Set number of backups to 0 -->
+							<property name="backups" value="0" />
+							<property name="onheapCacheEnabled" value="false" />
+							<property name="copyOnRead" value="false" />
+							<!--<property name="storeKeepBinary" value="false"/> -->
+							<!-- Creating the affinity function with custom setting. -->
 
-				</bean>
-			</list>
-		</property>
-	</bean>
+						</bean>
+					</list>
+				</property>
+			</bean>
 </beans>
